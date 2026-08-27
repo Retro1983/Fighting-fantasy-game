@@ -189,7 +189,7 @@ const scenes = {
 
 const nodes = {
   room1: {name:"Room 1", title:"The Cell", image:"room1", desc:"You awaken in a cold stone cell. A heavy wooden door is the only obvious way out.", exits:{N:"room2"}},
-  room2: {name:"Room 2", title:"The Passage", image:"corridor", desc:"A narrow stone passage stretches before you. The dungeon is silent, but you sense that the way out will not be simple.", exits:{S:"room1", N:"junction", W:"key"}},
+  room2: {name:"Room 2", title:"The Passage", image:"corridoor", desc:"A narrow stone passage stretches before you. The dungeon is silent, but you sense that the way out will not be simple.", exits:{S:"room1", N:"junction", W:"key"}},
   key: {name:"Key Passage", title:"Something on the Floor", image:"key", desc:"A small iron key lies on the cracked stone floor. It may fit one of the dungeon's locked doors.", exits:{E:"room2"}, item:"key"},
   junction: {name:"Junction", title:"Four Ways", image:"corridor", desc:"The passage opens into a junction. A locked door lies to the east. The northern route continues deeper into the dungeon.", exits:{S:"room2", N:"room3", W:"key"}},
   room3: {name:"Room 3", title:"The Locked Chamber", image:"room2", desc:"The chamber is darker here. A heavy door blocks the way ahead. Your key may be the answer.", exits:{S:"junction", E:"room4"}, locked:true},
