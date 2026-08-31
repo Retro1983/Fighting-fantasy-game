@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fighting Fantasy - Game 2</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <section class="scene-panel">
+      <img id="scene" alt="Current dungeon location">
+      <div class="shade" aria-hidden="true"></div>
+    </section>
+
+    <section class="story-panel">
+      <p class="eyebrow">Fighting Fantasy</p>
+      <h1 id="locationName"></h1>
+      <p id="storyText" class="story-text"></p>
+      <div id="monsterTimer" class="monster-timer" role="timer" aria-label="Time remaining" hidden>
+        <span>Time remaining</span>
+        <strong id="monsterSeconds">10</strong>
+      </div>
+
+      <div id="choiceHeading" class="choice-heading">What will you do?</div>
+      <div id="choiceButtons" class="choices" aria-label="Story choices"></div>
+
+      <div class="utility-buttons">
+        <button id="inventoryButton" class="inventory-button" aria-expanded="false">
+          Inventory <span id="inventoryCount">0/2</span>
+        </button>
+        <button id="useButton" class="use-button">Use</button>
+        <button id="examineButton" class="examine-button">Examine</button>
+      </div>
+      <div id="inventoryPanel" class="inventory-panel" hidden>
+        <button class="inventory-slot" data-inventory-slot="0">
+          <span>Item 1</span><strong id="inventoryItem1">Empty</strong>
+        </button>
+        <button class="inventory-slot" data-inventory-slot="1">
+          <span>Item 2</span><strong id="inventoryItem2">Empty</strong>
+        </button>
+        <button id="clearInventoryButton" class="clear-inventory">Clear Inventory</button>
+      </div>
+    </section>
+  </main>
+  <script src="map-data.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
