@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Combat Prototype</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #181818;
+      color: white;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 24px;
+      margin: 20px;
+    }
+
+    #combatArea {
+      position: relative;
+      width: 90%;
+      max-width: 800px;
+      height: 300px;
+      margin: 10px auto 20px;
+    }
+
+    #combatBar {
+      position: absolute;
+      left: 25%;
+      bottom: 20px;
+
+      width: 50%;
+      height: 20px;
+
+      display: flex;
+
+      border: 2px solid white;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .red {
+      background: #d32f2f;
+      width: 17.5%;
+    }
+
+    .yellow {
+      background: #fbc02d;
+      width: 22.5%;
+    }
+
+    .green {
+      background: #388e3c;
+      width: 20%;
+    }
+
+    #sword {
+      position: absolute;
+
+      width: 75px;
+      height: auto;
+
+      left: 0;
+
+      /*
+        This places the sword ABOVE the bar,
+        with the TIP touching the bar.
+      */
+      bottom: 39px;
+
+      transform: translateX(-50%);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #attackButton {
+      margin-top: 20px;
+
+      font-size: 26px;
+      font-weight: bold;
+
+      padding: 15px 45px;
+
+      cursor: pointer;
+    }
+
+    #result {
+      font-size: 32px;
+      font-weight: bold;
+
+      min-height: 45px;
+      margin-top: 25px;
+    }
+
+    #instructions {
+      margin-top: 20px;
+      color: #cccccc;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Combat Prototype</h1>
+
+  <div id="timer">
+    Time: <span id="time">10.0</span>
+  </div>
+
+  <div id="combatArea">
+
+    <img
+      id="sword"
+      src="sword.png"
+      alt="Sword"
+    >
+
+    <div id="combatBar">
+      <div class="red"></div>
+      <div class="yellow"></div>
+      <div class="green"></div>
+      <div class="yellow"></div>
+      <div class="red"></div>
+    </div>
+
+  </div>
+
+  <button id="attackButton">
+    ATTACK
+  </button>
+
+  <div id="result"></div>
+
+  <div id="instructions">
+    Stop the sword in the green zone for a Critical Hit.
+  </div>
+
+<script>
+
+const sword =
+  document.getElementById("sword");
+
+const bar =
+  document.getElementById("combatBar");
+
+const attackButton =
+  document.getElementById("attackButton");
+
+const result =
+  document.getElementById("result");
+
+const timeDisplay =
+  document.getElementById("time");
+
+
+let position = 0;
+
+let direction = 1;
+
+let running = true;
+
+let lastTime =
+  performance.now();
+
+let turnTime = 10;
+
+
+/*
+  Sword takes 1.5 seconds
+  to travel from one side
+  of the bar to the other.
+*/
+
+const travelTime = 1500;
+
+
+function animate(currentTime) {
+
+  const delta =
+    currentTime - lastTime;
+
+  lastTime =
+    currentTime;
+
+
+  if (running) {
+
+    const barWidth =
+      bar.clientWidth;
+
+
+    const speed =
+      barWidth / travelTime;
+
+
+    position +=
+      speed *
+      delta *
+      direction;
+
+
+    if (position >= barWidth) {
+
+      position =
+        barWidth;
+
+      direction =
+        -1;
+
+    }
+
+
+    if (position <= 0) {
+
+      position =
+        0;
+
+      direction =
+        1;
+
+    }
+
+
+    /*
+      The horizontal position represents
+      the EXACT position of the sword tip.
+    */
+
+    sword.style.left =
+  (bar.offsetLeft + position) + "px";
+
+
+    turnTime -=
+      delta / 1000;
+
+
+    if (turnTime <= 0) {
+
+      turnTime = 0;
+
+      running = false;
+
+      result.textContent =
+        "TURN LOST - DEFEND!";
+
+      attackButton.textContent =
+        "TRY AGAIN";
+
+    }
+
+
+    timeDisplay.textContent =
+      turnTime.toFixed(1);
+
+  }
+
+
+  requestAnimationFrame(
+    animate
+  );
+
+}
+
+
+attackButton.addEventListener(
+  "click",
+  function () {
+
+    if (!running) {
+
+      resetTurn();
+
+      return;
+
+    }
+
+
+    running = false;
+
+    checkResult();
+
+
+    attackButton.textContent =
+      "TRY AGAIN";
+
+  }
+);
+
+
+function checkResult() {
+
+  const barWidth =
+    bar.clientWidth;
+
+
+  const percentage =
+    (position / barWidth) * 100;
+
+
+  if (percentage < 17.5) {
+
+    result.textContent =
+      "MISS";
+
+  }
+
+  else if (percentage < 40) {
+
+    result.textContent =
+      "PARTIAL BLOW";
+
+  }
+
+  else if (percentage < 60) {
+
+    result.textContent =
+      "CRITICAL HIT!";
+
+  }
+
+  else if (percentage < 82.5) {
+
+    result.textContent =
+      "PARTIAL BLOW";
+
+  }
+
+  else {
+
+    result.textContent =
+      "MISS";
+
+  }
+
+}
+
+
+function resetTurn() {
+
+  position = 0;
+
+  direction = 1;
+
+  turnTime = 10;
+
+  running = true;
+
+  result.textContent = "";
+
+  attackButton.textContent =
+    "ATTACK";
+
+  lastTime =
+    performance.now();
+
+}
+
+
+requestAnimationFrame(
+  animate
+);
+
+</script>
+
+</body>
+</html>
