@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Defence Prototype</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #181818;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 24px;
+      margin: 20px;
+    }
+
+    #defenceArea {
+      position: relative;
+      width: 90%;
+      max-width: 700px;
+      height: 430px;
+      margin: 20px auto;
+    }
+
+    #shield {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+
+      width: 100%;
+      max-width: 420px;
+      height: 300px;
+
+      display: flex;
+
+      overflow: hidden;
+
+      border: 8px solid #777;
+      border-radius: 40px 40px 140px 140px;
+
+      box-sizing: border-box;
+    }
+
+    .zone {
+      height: 100%;
+    }
+
+    .red {
+      background: #d32f2f;
+      width: 17.5%;
+    }
+
+    .yellow {
+      background: #fbc02d;
+      width: 22.5%;
+    }
+
+    .green {
+      background: #388e3c;
+      width: 20%;
+    }
+
+    #enemySword {
+      position: absolute;
+      width: auto;
+      height: 90px;
+
+      left: 0;
+      top: -25px;
+
+      transform: translateX(-50%);
+      z-index: 10;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #defendButton {
+      margin-top: 20px;
+
+      font-size: 26px;
+      font-weight: bold;
+
+      padding: 15px 45px;
+
+      cursor: pointer;
+    }
+
+    #result {
+      font-size: 32px;
+      font-weight: bold;
+
+      min-height: 45px;
+      margin-top: 25px;
+    }
+
+    #instructions {
+      margin-top: 20px;
+      color: #cccccc;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Defence Prototype</h1>
+
+  <div id="timer">
+    Time: <span id="time">10.0</span>
+  </div>
+
+  <div id="defenceArea">
+
+    <img
+      id="enemySword"
+      src="sword.png"
+      alt="Enemy Sword"
+      width="60"
+      height="90"
+    >
+
+    <div id="shield">
+      <div class="zone red"></div>
+      <div class="zone yellow"></div>
+      <div class="zone green"></div>
+      <div class="zone yellow"></div>
+      <div class="zone red"></div>
+    </div>
+
+  </div>
+
+  <button id="defendButton">
+    DEFEND
+  </button>
+
+  <div id="result"></div>
+
+  <div id="instructions">
+    Stop the enemy sword over the green section for a Perfect Block.
+  </div>
+
+<script>
+
+const sword =
+  document.getElementById("enemySword");
+
+const shield =
+  document.getElementById("shield");
+
+const defenceArea =
+  document.getElementById("defenceArea");
+
+const defendButton =
+  document.getElementById("defendButton");
+
+const result =
+  document.getElementById("result");
+
+const timeDisplay =
+  document.getElementById("time");
+
+
+let position = 0;
+
+let running = true;
+
+let roundStartedAt =
+  performance.now();
+
+let turnTime = 10;
+
+
+/*
+  Time for the sword to cross
+  the entire shield.
+*/
+
+const travelTime = 1500;
+
+
+function animate(currentTime) {
+
+  if (running) {
+
+    updateRound(currentTime);
+
+  }
+
+
+  requestAnimationFrame(
+    animate
+  );
+
+}
+
+
+defendButton.addEventListener(
+  "click",
+  function () {
+
+    if (!running) {
+
+      resetTurn();
+
+      return;
+
+    }
+
+    updateRound(performance.now());
+
+    if (!running) {
+
+      return;
+
+    }
+
+    running = false;
+
+    checkResult();
+
+
+    defendButton.textContent =
+      "TRY AGAIN";
+
+  }
+);
+
+
+function checkResult() {
+
+  const percentage =
+    position * 100;
+
+
+  if (percentage < 17.5) {
+
+    result.textContent =
+      "HIT";
+
+  }
+
+  else if (percentage < 40) {
+
+    result.textContent =
+      "PARTIAL BLOCK";
+
+  }
+
+  else if (percentage < 60) {
+
+    result.textContent =
+      "PERFECT BLOCK";
+
+  }
+
+  else if (percentage < 82.5) {
+
+    result.textContent =
+      "PARTIAL BLOCK";
+
+  }
+
+  else {
+
+    result.textContent =
+      "HIT";
+
+  }
+
+}
+
+
+function resetTurn() {
+
+  position = 0;
+
+  turnTime = 10;
+
+  running = true;
+
+  result.textContent = "";
+
+  defendButton.textContent =
+    "DEFEND";
+
+  roundStartedAt =
+    performance.now();
+
+  timeDisplay.textContent =
+    turnTime.toFixed(1);
+
+  placeSword();
+
+}
+
+
+function updateRound(currentTime) {
+
+  const elapsed =
+    currentTime - roundStartedAt;
+
+  const journey =
+    (elapsed % (travelTime * 2)) / travelTime;
+
+  position = journey <= 1
+    ? journey
+    : 2 - journey;
+
+  placeSword();
+
+  turnTime = Math.max(
+    0,
+    10 - (elapsed / 1000)
+  );
+
+  timeDisplay.textContent =
+    turnTime.toFixed(1);
+
+  if (turnTime === 0) {
+
+    running = false;
+
+    result.textContent =
+      "HIT";
+
+    defendButton.textContent =
+      "TRY AGAIN";
+
+  }
+
+}
+
+
+function placeSword() {
+
+  const areaRect =
+    defenceArea.getBoundingClientRect();
+
+  const shieldRect =
+    shield.getBoundingClientRect();
+
+  const trackLeft =
+    shieldRect.left - areaRect.left + shield.clientLeft;
+
+  const trackWidth =
+    shield.clientWidth;
+
+  sword.style.left =
+    (trackLeft + (trackWidth * position)) + "px";
+
+  /* Let the final few pixels of the point overlap the shield edge. */
+  sword.style.top =
+    (shieldRect.top - areaRect.top - sword.offsetHeight + 4) + "px";
+
+}
+
+
+requestAnimationFrame(
+  animate
+);
+
+window.addEventListener(
+  "resize",
+  placeSword
+);
+
+</script>
+
+</body>
+</html>
