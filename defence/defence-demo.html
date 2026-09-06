@@ -27,48 +27,14 @@
     #defenceArea {
       position: relative;
       width: 90%;
-      max-width: 700px;
-      height: 430px;
+      max-width: 420px;
       margin: 20px auto;
     }
 
     #shield {
-      position: absolute;
-      left: 50%;
-      bottom: 20px;
-      transform: translateX(-50%);
-
+      display: block;
       width: 100%;
-      max-width: 420px;
-      height: 300px;
-
-      display: flex;
-
-      overflow: hidden;
-
-      border: 8px solid #777;
-      border-radius: 40px 40px 140px 140px;
-
-      box-sizing: border-box;
-    }
-
-    .zone {
-      height: 100%;
-    }
-
-    .red {
-      background: #d32f2f;
-      width: 17.5%;
-    }
-
-    .yellow {
-      background: #fbc02d;
-      width: 22.5%;
-    }
-
-    .green {
-      background: #388e3c;
-      width: 20%;
+      height: auto;
     }
 
     #enemySword {
@@ -130,13 +96,13 @@
       height="90"
     >
 
-    <div id="shield">
-      <div class="zone red"></div>
-      <div class="zone yellow"></div>
-      <div class="zone green"></div>
-      <div class="zone yellow"></div>
-      <div class="zone red"></div>
-    </div>
+    <img
+      id="shield"
+      src="shield.png"
+      alt="Damaged wooden shield with a steel centre boss"
+      width="1261"
+      height="1247"
+    >
 
   </div>
 
@@ -147,7 +113,7 @@
   <div id="result"></div>
 
   <div id="instructions">
-    Stop the enemy sword over the green section for a Perfect Block.
+    Stop the enemy sword over the steel centre boss for a Perfect Block.
   </div>
 
 <script>
@@ -359,9 +325,14 @@ function placeSword() {
   sword.style.left =
     (trackLeft + (trackWidth * position)) + "px";
 
-  /* Let the final few pixels of the point overlap the shield edge. */
+  /* Keep the point on the shield's horizontal target line. */
   sword.style.top =
-    (shieldRect.top - areaRect.top - sword.offsetHeight + 4) + "px";
+    (
+      shieldRect.top - areaRect.top
+      + (shieldRect.height / 2)
+      - sword.offsetHeight
+      + 4
+    ) + "px";
 
 }
 
