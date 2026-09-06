@@ -20,7 +20,7 @@ function render() {
 
   let storyText;
   if (state.chestMode) {
-    storyText = "Inside the chest you find a glowing torch, a sword, and a bag full of gold coins. You may choose only two.";
+    storyText = "Inside the chest you find a glowing torch, a sword, Fool's Gold. You may choose only two.";
   } else if (state.location === "SP1" && state.sp1TorchReady) {
     storyText = location.torchText;
   } else {

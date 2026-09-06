@@ -26,7 +26,7 @@ const ARTWORK = Object.freeze({
 const ITEMS = Object.freeze({
   torch: Object.freeze({ name: "Glowing Torch" }),
   sword: Object.freeze({ name: "Sword" }),
-  gold: Object.freeze({ name: "Bag of Gold Coins" })
+  gold: Object.freeze({ name: "Fool's Gold" })
 });
 
 const LOCATIONS = Object.freeze({
