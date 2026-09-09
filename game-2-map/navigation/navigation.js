@@ -64,11 +64,17 @@ function examineCurrentLocation() {
 
   closeInventoryModes();
   if (location.examineTarget) {
-    if (!LOCATIONS[location.examineTarget]) {
-      throw new Error(`Unknown examine location: ${location.examineTarget}`);
-    }
-    return navigateToLocation(location.examineTarget);
+  if (!LOCATIONS[location.examineTarget]) {
+    throw new Error(`Unknown examine location: ${location.examineTarget}`);
   }
+
+  if (location.examineTarget === "GOLD_COINS" && !state.inventory.includes("gold")) {
+    state.inventory.push("gold");
+  }
+
+  return navigateToLocation(location.examineTarget);
+}
+  
 
   state.message = "You search but find nothing.";
   render();

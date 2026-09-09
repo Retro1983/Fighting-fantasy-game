@@ -176,7 +176,7 @@ const LOCATIONS = Object.freeze({
   },
   RA4: {
     artId: "RA", title: "The Fourth Room",
-    text: "You enter the room beyond the monster's chamber.",
+    text: "You enter the room beyond the monster’s chamber. Freedom is just ahead, although something in the room seems out of place..",
     examineTarget: "GOLD_COINS",
     choices: [
       { label: "Step out into freedom", target: "FREEDOM" },

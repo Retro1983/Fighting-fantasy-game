@@ -24,9 +24,14 @@ function render() {
   } else if (state.location === "SP1" && state.sp1TorchReady) {
     storyText = location.torchText;
   } else {
-    storyText = location.text;
+  storyText = location.text;
+
+  if (state.location === "FREEDOM" && !state.inventory.includes("gold")) {
+    storyText += " Congratulations! You escaped, but failed to find the gold.";
   }
-  if (state.message) storyText += ` ${state.message}`;
+}
+
+if (state.message) storyText += ` ${state.message}`;
   document.getElementById("storyText").textContent = storyText;
   renderMonsterTimer();
   document.getElementById("choiceHeading").hidden = choicesToShow.length === 0;
