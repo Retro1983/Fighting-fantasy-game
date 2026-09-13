@@ -1,0 +1,14 @@
+[hidden] { display: none !important; }
+.dice-panel { width: min(100%, 720px); padding-top: 24px; }
+.turn-label { margin-bottom: 12px; }
+#message { min-height: 48px; font: 16px/1.5 system-ui, sans-serif; }
+#stat-dice { margin-block: 16px; padding-block: 28px; min-height: 180px; }
+h2 { font-size: 22px; font-weight: normal; margin: 28px 0 14px; }
+#summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 0 0 24px; }
+.stat-card { border: 1px solid #93764766; border-radius: 6px; padding: 16px 8px; background: #17130e88; }
+dt { font: 600 12px system-ui, sans-serif; letter-spacing: .14em; color: #c5aa78; }
+dd { margin: 8px 0 0; }
+.stat-value { display: block; font-size: 34px; }
+.calculation { display: block; font: 12px/1.5 system-ui, sans-serif; color: #b9ad96; margin-top: 10px; }
+.secondary { background: transparent; font-size: 11px; min-height: 44px; }
+@media (max-width: 480px) { #summary { grid-template-columns: 1fr; } .stat-card { padding: 12px; } .stat-value { font-size: 28px; } }
