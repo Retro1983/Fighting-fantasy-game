@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dice roll</title>
+  <link rel="stylesheet" href="dice.css">
+  <script src="dice.js" defer></script>
+</head>
+<body>
+  <main class="dice-panel">
+    <p class="eyebrow">THE DICE TABLE</p>
+    <p class="turn-label" id="turn-label">YOUR ROLL</p>
+    <h1>Cast your fate.</h1>
+    <p class="hint">Press STOP to reveal your roll.</p>
+    <div class="dice-pair" aria-label="Two dice rolling">
+      <div class="die" role="img" aria-label="First die rolling"></div>
+      <div class="die" role="img" aria-label="Second die rolling"></div>
+    </div>
+    <p class="total" role="status" aria-live="polite" aria-atomic="true">Total <strong>—</strong></p>
+    <div class="results" aria-live="polite" aria-atomic="true" hidden>
+      <p>YOUR ROLL: <strong id="player-total">—</strong></p>
+      <p>ENEMY ROLL: <strong id="enemy-total">—</strong></p>
+    </div>
+    <button id="stop" type="button">STOP</button>
+    <p class="footnote">Two dice. One fate.</p>
+  </main>
+</body>
+</html>
