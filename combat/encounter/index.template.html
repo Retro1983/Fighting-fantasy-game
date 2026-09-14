@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sword and shield — Combat demo</title>
+<!-- STYLES -->
+</head>
+<body>
+<main>
+<p class="eyebrow">SWORD &amp; SHIELD</p>
+<h1 id="encounter-heading" hidden>A beast blocks your path.</h1>
+<section id="creation">
+<h2>Create your character</h2>
+<p id="stat-rule"></p>
+<div id="stat-dice" class="dice-pair" role="img" aria-label="Dice"></div>
+<p id="stat-message" role="status" aria-live="polite"></p>
+<button id="roll-stat">ROLL SKILL</button>
+</section>
+<p id="saved-stats"></p>
+<p class="muted">SKILL and LUCK are saved for this demo. Only STAMINA is used in combat.</p>
+<section id="pickup" hidden>
+<button id="take-sword">START COMBAT DEMO</button>
+</section>
+<section id="fight" hidden>
+<p id="weapon-info"></p>
+<div class="scores"><p>You <strong id="player-hp"></strong> STAMINA</p><p>Beast <strong id="enemy-hp"></strong> STAMINA</p></div>
+<p class="muted">Beast maximum damage: 3 HP</p>
+<h2 id="turn"></h2>
+<p id="clock">Time: 10.0</p>
+<div id="attack-area" class="arena">
+<img id="attack-target" src="../attack-target.png" width="1122" height="1402" alt="Armour target: grey outer arms, brown chest and red centre">
+<img id="attack-sword" class="moving-sword" src="../sword.png" alt="Sword">
+<div id="attack-bar" aria-hidden="true"></div>
+</div>
+<div id="defence-area" class="arena" hidden>
+<img id="shield" src="../../defence/shield.png" alt="Wooden shield with a steel centre boss">
+<img id="defence-sword" class="moving-sword" src="../../defence/sword.png" alt="Enemy sword">
+</div>
+<p id="rules"></p>
+<p id="result" role="status" aria-live="polite"></p>
+<button id="action">START ATTACK</button>
+</section>
+<button id="new-character" class="secondary">ROLL NEW CHARACTER</button>
+</main>
+<!-- SCRIPTS -->
+</body>
+</html>
