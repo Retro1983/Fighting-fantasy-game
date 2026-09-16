@@ -1,6 +1,8 @@
 # Reusable player stats
 
-Open `stats/index.html` from the repository or serve the repository with a static web server and visit `/stats/`. No build step is required. This prototype is not connected to Game 2.
+Double-click `stats/index.html` in Finder, or serve the repository and visit `/stats/`. The committed demo embeds its CSS and JavaScript and needs no server or build step to play.
+
+For edits, change `index.template.html`, `stats.css`, `stats.js`, `stats-demo.js`, or the shared dice sources, then run `python3 stats/build-demo.py` from the repository root. Commit the regenerated `stats/index.html` alongside the changed sources. The separate JS modules remain reusable by other games. This prototype is not connected to Game 2.
 
 Roll and stop SKILL, then STAMINA, then LUCK. Start Over discards all three results, including any roll in progress.
 

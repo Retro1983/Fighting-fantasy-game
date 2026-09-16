@@ -85,8 +85,12 @@ assert.equal(LOCATIONS.FREEDOM.ending, true, "FREEDOM must be an ending");
 assert.deepEqual(
   LOCATIONS.P1.choices.map(choice => choice.target),
   ["DEATH", "M1"],
-  "P1 must offer jump to DEATH or return to M1"
+  "P1 must retain failure to DEATH and return to M1"
 );
+assert.equal(LOCATIONS.P1.choices[0].action, "testLuck");
+assert.equal(LOCATIONS.P1.choices[0].successTarget, "PIT_DOOR");
+assert.deepEqual(LOCATIONS.PIT_DOOR.choices, [{ label: "Enter through door", target: "M1" }]);
+assert.equal(ARTWORK[LOCATIONS.PIT_DOOR.artId].file, "assets/door-slightly-ajar.png");
 assert.equal(LOCATIONS.DEATH.ending, true, "DEATH must be an ending");
 assert.deepEqual(
   LOCATIONS.DEATH.choices[0],
@@ -100,7 +104,7 @@ assert.deepEqual(
 );
 assert.deepEqual(
   Object.values(ITEMS).map(item => item.name),
-  ["Glowing Torch", "Sword", "Bag of Gold Coins"],
+  ["Glowing Torch", "Sword", "Fool's Gold"],
   "The chest must contain the three defined items"
 );
 assert.deepEqual(

@@ -11,6 +11,7 @@ const ARTWORK = Object.freeze({
   DA: { file: "assets/cell_door.png", label: "Cell door" },
   SP: { file: "assets/spikes.png", label: "Spikes corridor" },
   TRIP_WIRE: { file: "assets/trip_wire.png", label: "Revealed trip wire" },
+  PIT_DOOR: { file: "assets/door-slightly-ajar.png", label: "Door slightly ajar" },
   P: { file: "assets/Pit.png", label: "Pit corridor" },
   EW: { file: "assets/east_west.png", label: "East/west turn" },
   CH: { file: "assets/chest_room.png", label: "Chest room" },
@@ -72,9 +73,14 @@ const LOCATIONS = Object.freeze({
     artId: "P", title: "The Pit",
     text: "There is a large pit in front of you, with a door visible beyond it.",
     choices: [
-      { label: "Attempt to jump the pit", target: "DEATH" },
+      { label: "Attempt to jump the pit (Test Your Luck)", action: "testLuck", target: "DEATH", successTarget: "PIT_DOOR" },
       { label: "Return the way you came", target: "M1" }
     ]
+  },
+  PIT_DOOR: {
+    artId: "PIT_DOOR", title: "The Door Beyond the Pit",
+    text: "You made the jump and enter the door",
+    choices: [{ label: "Enter through door", target: "M1" }]
   },
   DEATH: {
     artId: "DEATH", title: "Death",

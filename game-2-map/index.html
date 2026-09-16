@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fighting Fantasy - Game 2</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=character-setup">
 </head>
 <body>
-  <main class="game-shell">
+  <section id="characterSetup" aria-label="Create your character"></section>
+  <main id="adventure" class="game-shell" hidden>
     <section class="scene-panel">
       <img id="scene" alt="Current dungeon location">
       <div class="shade" aria-hidden="true"></div>
@@ -15,8 +16,10 @@
 
     <section class="story-panel">
       <p class="eyebrow">Fighting Fantasy</p>
-      <h1 id="locationName"></h1>
+      <h1 id="locationName" tabindex="-1"></h1>
       <p id="storyText" class="story-text"></p>
+      <div id="luckDice" hidden></div>
+      <p id="luckResult" role="status" hidden></p>
       <div id="monsterTimer" class="monster-timer" role="timer" aria-label="Time remaining" hidden>
         <span>Time remaining</span>
         <strong id="monsterSeconds">10</strong>
@@ -43,10 +46,15 @@
       </div>
     </section>
   </main>
-  <script src="map-data.js"></script>
+  <script src="../dice/dice.js"></script>
+  <script src="../stats/stats.js"></script>
+  <script src="map-data.js?v=pit-door-20260916"></script>
   <script src="navigation/navigation.js"></script>
   <script src="inventory/inventory.js"></script>
   <script src="combat/combat.js"></script>
+  <script src="../stats/stats-ui.js"></script>
+  <script src="character-setup.js"></script>
+  <script src="luck-check.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

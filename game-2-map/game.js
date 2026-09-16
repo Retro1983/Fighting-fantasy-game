@@ -6,12 +6,15 @@ function renderMonsterTimer() {
 }
 
 function render() {
+  document.getElementById("characterSetup").hidden = Boolean(state.player);
+  document.getElementById("adventure").hidden = !state.player;
+  if (!state.player) return;
   const location = LOCATIONS[state.location];
   const artId = state.location === "SP1" && state.sp1TorchReady
     ? location.torchArtId
     : location.artId;
   const artwork = ARTWORK[artId];
-  const choicesToShow = visibleChoices(location);
+  const choicesToShow = pendingLuck ? [{ label: "STOP", stopLuck: true }] : visibleChoices(location);
 
   const scene = document.getElementById("scene");
   scene.src = artwork.file;
@@ -33,6 +36,15 @@ function render() {
 
 if (state.message) storyText += ` ${state.message}`;
   document.getElementById("storyText").textContent = storyText;
+  const luckPanel = document.getElementById("luckResult");
+  const luck = state.luckResult;
+  document.getElementById("luckDice").hidden = !pendingLuck && !luck;
+  luckPanel.hidden = !luck && !location.choices.some(choice => choice.action === "testLuck");
+  luckPanel.textContent = pendingLuck
+    ? `Current LUCK: ${state.player.getState().current.luck}. Press STOP to reveal your two dice and attempt the jump.`
+    : luck
+    ? `Test Your Luck: ${luck.values.join(" + ")} = ${luck.total}. LUCK used: ${luck.luckUsed}. ${luck.successful ? "Successful" : "Unsuccessful"}. New LUCK: ${luck.luckAfter}.`
+    : `Current LUCK: ${state.player.getState().current.luck}. Roll equal to or below this to succeed. Every test costs 1 LUCK.`;
   renderMonsterTimer();
   document.getElementById("choiceHeading").hidden = choicesToShow.length === 0;
 
@@ -41,13 +53,15 @@ if (state.message) storyText += ` ${state.message}`;
     const button = document.createElement("button");
     button.className = "choice-button";
     button.innerHTML = `<span class="choice-number">${index + 1}.</span>${choice.label}`;
-    button.onclick = () => choice.itemId ? takeChestItem(choice.itemId) : choose(choice);
+    button.onclick = () => choice.stopLuck ? stopLuckCheck() : choice.itemId ? takeChestItem(choice.itemId) : choose(choice);
     return button;
   }));
 
   renderInventory();
 }
 
+setupLuckCheck();
+setupCharacterCreation();
 setupNavigationControls();
 setupInventoryControls();
 render();

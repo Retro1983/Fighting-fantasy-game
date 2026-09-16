@@ -60,6 +60,37 @@
       destroy() { roller.destroy(); rolling = false; disposed = true; }
     });
   }
-  root.PlayerStats = Object.freeze({ definitions, createGenerator });
+  // A fresh adventure uses the existing generator and owns its current stats.
+  // Passing completed generator results also supports games with manual setup.
+  function createCharacter({ results, dice = root.Dice } = {}) {
+    if (!results) {
+      const generator = createGenerator({ dice });
+      try {
+        for (const stat of definitions) { generator.start(); generator.stop(); }
+        results = generator.getState().results;
+      } finally { generator.destroy(); }
+    }
+    const initial = {};
+    for (const { key } of definitions) {
+      const value = results[key]?.total;
+      if (!Number.isInteger(value) || value < 0) throw new TypeError('Expected completed stat results.');
+      initial[key] = value;
+    }
+    Object.freeze(initial);
+    const current = { ...initial };
+    return Object.freeze({
+      getState() { return Object.freeze({ initial, current: Object.freeze({ ...current }) }); },
+      testLuck(roll = dice.rollDice()) {
+        if (!roll || !Array.isArray(roll.values) || roll.values.length !== 2 ||
+            !roll.values.every(value => Number.isInteger(value) && value >= 1 && value <= 6) ||
+            roll.total !== roll.values[0] + roll.values[1]) throw new TypeError('Expected a valid two-dice result.');
+        const luckUsed = current.luck;
+        current.luck = Math.max(0, luckUsed - 1);
+        return Object.freeze({ values: Object.freeze([...roll.values]), total: roll.total, luckUsed,
+          successful: roll.total <= luckUsed, luckAfter: current.luck });
+      }
+    });
+  }
+  root.PlayerStats = Object.freeze({ definitions, createGenerator, createCharacter });
   if (typeof module !== 'undefined' && module.exports) module.exports = root.PlayerStats;
 })(globalThis);

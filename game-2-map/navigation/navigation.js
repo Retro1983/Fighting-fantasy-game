@@ -1,5 +1,7 @@
 const state = {
   location: START,
+  player: null,
+  luckResult: null,
   monsterSeconds: null,
   message: ""
 };
@@ -28,28 +30,40 @@ function startMonsterTimer() {
   }, 1000);
 }
 
-function navigateToLocation(target) {
+function navigateToLocation(target, message = "", luckResult = null) {
   if (!LOCATIONS[target]) throw new Error(`Unknown location: ${target}`);
 
+  cancelLuckCheck();
   if (LOCATIONS[state.location].timeLimit) stopMonsterTimer();
   resetInventoryAfterNavigation();
   state.location = target;
-  state.message = "";
+  state.message = message;
+  state.luckResult = luckResult;
 
   if (LOCATIONS[state.location].timeLimit) startMonsterTimer();
   render();
 }
 
 function resetAdventure() {
+  cancelLuckCheck();
   stopMonsterTimer();
   state.location = START;
   resetInventory();
+  state.player = null;
+  characterSetup.reset();
+  state.luckResult = null;
   state.message = "";
   render();
 }
 
 function choose(choice) {
+  if (!state.player || pendingLuck) return;
+  // Ignore stale buttons so one attempt cannot spend Luck twice.
+  if (!LOCATIONS[state.location].choices.includes(choice)) return;
   if (choice.restart) return resetAdventure();
+  if (choice.action === "testLuck") {
+    return beginLuckCheck(choice);
+  }
   if (choice.action === "searchChest") return beginChestSelection();
   if (choice.action === "continueSP1") {
     const target = state.sp1TorchReady ? choice.successTarget : choice.target;

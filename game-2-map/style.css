@@ -1,3 +1,5 @@
+#adventure[hidden], #characterSetup[hidden] { display: none !important; }
+
 :root {
   color-scheme: dark;
   --ink: #f1e8d8;
