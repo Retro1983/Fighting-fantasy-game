@@ -80,6 +80,11 @@
     const current = { ...initial };
     return Object.freeze({
       getState() { return Object.freeze({ initial, current: Object.freeze({ ...current }) }); },
+      takeDamage(amount) {
+        if (!Number.isInteger(amount) || amount < 0) throw new RangeError("Damage must be a nonnegative integer.");
+        current.stamina = Math.max(0, current.stamina - amount);
+        return current.stamina;
+      },
       testLuck(roll = dice.rollDice()) {
         if (!roll || !Array.isArray(roll.values) || roll.values.length !== 2 ||
             !roll.values.every(value => Number.isInteger(value) && value >= 1 && value <= 6) ||

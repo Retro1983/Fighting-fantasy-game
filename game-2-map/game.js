@@ -1,3 +1,13 @@
+function renderPlayerStats() {
+  const panel = document.getElementById("playerStats");
+  panel.hidden = !state.player;
+  if (!state.player) return;
+  const { current } = state.player.getState();
+  document.getElementById("playerSkill").textContent = current.skill;
+  document.getElementById("playerStamina").textContent = current.stamina;
+  document.getElementById("playerLuck").textContent = current.luck;
+}
+
 function renderMonsterTimer() {
   const timer = document.getElementById("monsterTimer");
   const isActive = Boolean(LOCATIONS[state.location].timeLimit) && state.monsterSeconds !== null;
@@ -6,8 +16,10 @@ function renderMonsterTimer() {
 }
 
 function render() {
+  renderPlayerStats();
   document.getElementById("characterSetup").hidden = Boolean(state.player);
   document.getElementById("adventure").hidden = !state.player;
+  syncBattle();
   if (!state.player) return;
   const location = LOCATIONS[state.location];
   const artId = state.location === "SP1" && state.sp1TorchReady

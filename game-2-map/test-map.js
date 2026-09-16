@@ -40,6 +40,10 @@ const visited = new Set([START]);
 const queue = [START];
 while (queue.length) {
   const id = queue.shift();
+  for (const target of [LOCATIONS[id].encounter?.victory, LOCATIONS[id].encounter?.defeat].filter(Boolean)) {
+    assert.ok(LOCATIONS[target]);
+    if (!visited.has(target)) { visited.add(target); queue.push(target); }
+  }
   const examineTarget = LOCATIONS[id].examineTarget;
   if (examineTarget && !visited.has(examineTarget)) {
     visited.add(examineTarget);
@@ -72,10 +76,10 @@ assert.equal(
   "A monster stands before you, and it looks hungry!!!",
   "MONSTER must show the hungry monster text"
 );
-assert.equal(LOCATIONS.MONSTER.choices[0].target, "DEATH3", "Escaping MONSTER without the sword must lead to DEATH3");
-assert.equal(LOCATIONS.MONSTER.choices[0].successTarget, "MONSTER_DEATH", "Using the Sword at MONSTER must reach MONSTER_DEATH");
-assert.equal(LOCATIONS.MONSTER.timeLimit, 10, "MONSTER must have a 10-second timer");
-assert.equal(LOCATIONS.MONSTER.timeoutTarget, "DEATH3", "MONSTER timer must end at DEATH3");
+assert.equal(LOCATIONS.MONSTER.choices[0].target, "DEATH3", "Escape retains the existing death route");
+assert.equal(LOCATIONS.MONSTER.encounter.victory, "MONSTER_DEATH");
+assert.equal(LOCATIONS.MONSTER.encounter.defeat, "DEATH3");
+assert.equal(LOCATIONS.MONSTER.timeLimit, undefined, "Battle replaces the room death timer");
 assert.equal(LOCATIONS.MONSTER_DEATH.choices[0].target, "RA4", "A defeated monster must lead to RA4");
 assert.equal(LOCATIONS.RA4.choices[0].target, "FREEDOM", "RA4 must lead to FREEDOM");
 assert.equal(LOCATIONS.RA4.choices[1].target, "MONSTER_DEATH", "RA4 must return to the defeated monster scene");

@@ -165,9 +165,8 @@ const LOCATIONS = Object.freeze({
   MONSTER: {
     artId: "MONSTER", title: "The Monster",
     text: "A monster stands before you, and it looks hungry!!!",
-    timeLimit: 10,
-    timeoutTarget: "DEATH3",
-    choices: [{ label: "Try to escape", target: "DEATH3", successTarget: "MONSTER_DEATH" }]
+    encounter: { enemy: { name: "Monster", skill: 8, stamina: 15 }, victory: "MONSTER_DEATH", defeat: "DEATH3" },
+    choices: [{ label: "Try to escape", target: "DEATH3" }]
   },
   MONSTER_DEATH: {
     artId: "MONSTER_DEATH", title: "The Monster Is Defeated",

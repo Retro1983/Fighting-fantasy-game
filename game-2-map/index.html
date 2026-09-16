@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fighting Fantasy - Game 2</title>
-  <link rel="stylesheet" href="style.css?v=character-setup">
+  <link rel="stylesheet" href="style.css?v=stats-box-20260916">
 </head>
 <body>
   <section id="characterSetup" aria-label="Create your character"></section>
@@ -25,6 +25,7 @@
         <strong id="monsterSeconds">10</strong>
       </div>
 
+      <section id="battle" aria-label="Battle" hidden></section>
       <div id="choiceHeading" class="choice-heading">What will you do?</div>
       <div id="choiceButtons" class="choices" aria-label="Story choices"></div>
 
@@ -44,6 +45,11 @@
         </button>
         <button id="clearInventoryButton" class="clear-inventory">Clear Inventory</button>
       </div>
+      <dl id="playerStats" class="player-stats" aria-label="Your current stats" aria-live="polite" hidden>
+        <div><dt>SKILL</dt><dd id="playerSkill"></dd></div>
+        <div><dt>STAMINA</dt><dd id="playerStamina"></dd></div>
+        <div><dt>LUCK</dt><dd id="playerLuck"></dd></div>
+      </dl>
     </section>
   </main>
   <script src="../dice/dice.js"></script>
@@ -51,6 +57,8 @@
   <script src="map-data.js?v=pit-door-20260916"></script>
   <script src="navigation/navigation.js"></script>
   <script src="inventory/inventory.js"></script>
+  <script src="../combat/encounter/combat.js"></script>
+  <script src="../combat/encounter/battle-ui.js"></script>
   <script src="combat/combat.js"></script>
   <script src="../stats/stats-ui.js"></script>
   <script src="character-setup.js"></script>

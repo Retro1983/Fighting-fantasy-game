@@ -33,6 +33,7 @@ function startMonsterTimer() {
 function navigateToLocation(target, message = "", luckResult = null) {
   if (!LOCATIONS[target]) throw new Error(`Unknown location: ${target}`);
 
+  stopBattle();
   cancelLuckCheck();
   if (LOCATIONS[state.location].timeLimit) stopMonsterTimer();
   resetInventoryAfterNavigation();
@@ -45,6 +46,7 @@ function navigateToLocation(target, message = "", luckResult = null) {
 }
 
 function resetAdventure() {
+  stopBattle();
   cancelLuckCheck();
   stopMonsterTimer();
   state.location = START;

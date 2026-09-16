@@ -105,7 +105,7 @@ function selectInventoryItem(slotIndex) {
     state.sp1TorchReady = false;
     state.message = `You ready the ${ITEMS[itemId].name}, but the passage remains dangerously dark.`;
   } else if (state.location === "MONSTER" && itemId === "sword") {
-    return navigateToLocation("MONSTER_DEATH");
+    state.message = "Your sword is ready. Use the battle controls to attack.";
   } else if (state.location === "MONSTER") {
     state.message = `The ${ITEMS[itemId].name} cannot stop the hungry monster.`;
   } else {
