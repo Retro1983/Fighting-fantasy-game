@@ -165,9 +165,18 @@ const LOCATIONS = Object.freeze({
   MONSTER: {
     artId: "MONSTER", title: "The Monster",
     text: "A monster stands before you, and it looks hungry!!!",
-    encounter: { enemy: { name: "Monster", skill: 8, stamina: 15 }, victory: "MONSTER_DEATH", defeat: "DEATH3" },
+    encounter: { enemy: { name: "Monster", skill: 8, stamina: 15 }, victory: "MONSTER_DEATH", defeat: "BATTLE_DEATH" },
     choices: [{ label: "Try to escape", target: "DEATH3" }]
-  },
+  },BATTLE_DEATH: {
+ 
+    artId: "DEATH3",
+  title: "Death",
+  text: "You were not skilled enough to survive this battle.",
+  ending: true,
+  choices: [
+    { label: "Restart Adventure", target: "RA1", restart: true }
+  ]
+},
   MONSTER_DEATH: {
     artId: "MONSTER_DEATH", title: "The Monster Is Defeated",
     text: "Your sword strikes true. The monster falls, leaving the way to the next room clear.",
