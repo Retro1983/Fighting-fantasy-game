@@ -2,7 +2,7 @@
 (function (root) {
   'use strict';
   const assets = new URL('.', document.currentScript.src);
-  function mount(host, { player, enemy = Combat.beast, onDamage = () => {}, onComplete = () => {} }) {
+  function mount(host, { player, enemy = Combat.beast, attackTravelTime = 1500, defenceTravelTime = 1500, onDamage = () => {}, onComplete = () => {} }) {
     const view = host.shadowRoot || host.attachShadow({ mode: 'open' });
     view.innerHTML = `<link rel="stylesheet" href="${new URL('encounter.css', assets)}">
       <style>:host { display:block; flex-shrink:0; } main { width:100%; }
@@ -60,7 +60,7 @@
       if (state.outcome) onComplete(state.outcome);
     }
     function update(now) {
-      const sample = Combat.timing(now - startedAt);
+      const sample = Combat.timing(now - startedAt, encounter.getState().turn === 'attack' ? attackTravelTime : defenceTravelTime);
       position = sample.position;
       $('clock').textContent = `Time: ${(sample.remaining / 1000).toFixed(1)}`;
       place();

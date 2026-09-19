@@ -78,7 +78,7 @@ assert.equal(
 );
 assert.equal(LOCATIONS.MONSTER.choices[0].target, "DEATH3", "Escape retains the existing death route");
 assert.equal(LOCATIONS.MONSTER.encounter.victory, "MONSTER_DEATH");
-assert.equal(LOCATIONS.MONSTER.encounter.defeat, "DEATH3");
+assert.equal(LOCATIONS.MONSTER.encounter.defeat, "BATTLE_DEATH");
 assert.equal(LOCATIONS.MONSTER.timeLimit, undefined, "Battle replaces the room death timer");
 assert.equal(LOCATIONS.MONSTER_DEATH.choices[0].target, "RA4", "A defeated monster must lead to RA4");
 assert.equal(LOCATIONS.RA4.choices[0].target, "FREEDOM", "RA4 must lead to FREEDOM");
