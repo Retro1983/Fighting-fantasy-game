@@ -28,7 +28,7 @@ for (let luck = 0; luck <= 12; luck++) {
 }
 // Exercise the actual browser scripts and rendered text with a minimal DOM.
 const elements = new Map();
-function element() { return { hidden: false, textContent: '', children: [], firstElementChild: { focus() {} }, classList: { toggle() {} }, setAttribute() {}, replaceChildren(...children) { this.children = children; } }; }
+function element() { return { focus() {}, hidden: false, textContent: '', children: [], firstElementChild: { focus() {} }, classList: { toggle() {} }, setAttribute() {}, replaceChildren(...children) { this.children = children; } }; }
 const document = { getElementById(id) { if (!elements.has(id)) elements.set(id, element()); return elements.get(id); },
   querySelector() { return element(); }, querySelectorAll() { return []; }, createElement: element };
 let sample = 0;
@@ -52,8 +52,14 @@ staleJump.onclick();
 assert.equal(run('state.location'), 'P1');
 assert.equal(run('state.player.getState().current.luck'), 7);
 assert.match(elements.get('luckResult').textContent, /Press STOP/);
+assert.equal(elements.get('storyContent').hidden, true);
+assert.equal(elements.get('stopLuckButton').hidden, false);
+assert.equal(elements.get('choiceButtons').children.length, 0);
 staleJump.onclick();
-run('stopLuckCheck(); stopLuckCheck();');
+elements.get('stopLuckButton').onclick();
+run('stopLuckCheck();');
+assert.equal(elements.get('storyContent').hidden, false);
+assert.equal(elements.get('stopLuckButton').hidden, true);
 assert.equal(run('state.location'), 'PIT_DOOR');
 assert.equal(elements.get('storyText').textContent, 'You made the jump and enter the door');
 assert.equal(elements.get('scene').src, 'assets/door-slightly-ajar.png');

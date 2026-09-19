@@ -37,7 +37,7 @@ function beginLuckCheck(choice) {
   });
   render();
   luckRoller.start();
-  document.getElementById('choiceButtons').firstElementChild.focus();
+  document.getElementById('stopLuckButton').focus();
 }
 
 function stopLuckCheck() {

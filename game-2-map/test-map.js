@@ -11,7 +11,7 @@ assert.equal(
 for (const [id, location] of Object.entries(LOCATIONS)) {
   assert.ok(ARTWORK[location.artId], `${id} uses missing artwork ${location.artId}`);
   assert.ok(location.title, `${id} needs a player-facing title`);
-  assert.ok(location.text, `${id} needs story text`);
+  assert.ok(location.text || (Array.isArray(location.pages) && location.pages.length && location.pages.every(page => typeof page === "string" && page.trim())), `${id} needs story text or nonempty story pages`);
   if (location.examineTarget) {
     assert.ok(LOCATIONS[location.examineTarget], `${id} examines to missing location ${location.examineTarget}`);
   }

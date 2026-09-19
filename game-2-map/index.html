@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fighting Fantasy - Game 2</title>
-  <link rel="stylesheet" href="style.css?v=stats-box-20260916">
+  <link rel="stylesheet" href="style.css?v=activity-panel-20260919">
 </head>
 <body>
   <section id="characterSetup" aria-label="Create your character"></section>
@@ -15,17 +15,36 @@
     </section>
 
     <section class="story-panel">
+      <dl id="playerStats" class="player-stats" aria-label="Your current stats" aria-live="polite" hidden>
+        <div><dt>SKILL</dt><dd id="playerSkill"></dd></div>
+        <div><dt>STAMINA</dt><dd id="playerStamina"></dd></div>
+        <div><dt>LUCK</dt><dd id="playerLuck"></dd></div>
+      </dl>
+      <section id="activityPanel" class="activity-panel" aria-label="Main activity panel">
+      <div id="storyContent">
       <p class="eyebrow">Fighting Fantasy</p>
       <h1 id="locationName" tabindex="-1"></h1>
       <p id="storyText" class="story-text"></p>
+      <nav id="storyPager" class="story-pager" aria-label="Story pages" hidden>
+        <button id="previousPage" type="button" aria-label="Previous story page">←</button>
+        <span id="pageIndicator" role="status" aria-live="polite"></span>
+        <button id="nextPage" type="button" aria-label="Next story page">→</button>
+      </nav>
+      </div>
+      <div id="luckContent" hidden>
+      <h2>TEST YOUR LUCK</h2>
       <div id="luckDice" hidden></div>
+      </div>
       <p id="luckResult" role="status" hidden></p>
+      <button id="stopLuckButton" class="choice-button" type="button" hidden>STOP</button>
       <div id="monsterTimer" class="monster-timer" role="timer" aria-label="Time remaining" hidden>
         <span>Time remaining</span>
         <strong id="monsterSeconds">10</strong>
       </div>
 
       <section id="battle" aria-label="Battle" hidden></section>
+      <p id="activityMessage" role="status" hidden></p>
+      </section>
       <div id="choiceHeading" class="choice-heading">What will you do?</div>
       <div id="choiceButtons" class="choices" aria-label="Story choices"></div>
 
@@ -45,18 +64,14 @@
         </button>
         <button id="clearInventoryButton" class="clear-inventory">Clear Inventory</button>
       </div>
-      <dl id="playerStats" class="player-stats" aria-label="Your current stats" aria-live="polite" hidden>
-        <div><dt>SKILL</dt><dd id="playerSkill"></dd></div>
-        <div><dt>STAMINA</dt><dd id="playerStamina"></dd></div>
-        <div><dt>LUCK</dt><dd id="playerLuck"></dd></div>
-      </dl>
+
     </section>
   </main>
   <script src="../dice/dice.js"></script>
   <script src="../stats/stats.js"></script>
   <script src="map-data.js?v=pit-door-20260916"></script>
   <script src="navigation/navigation.js"></script>
-  <script src="inventory/inventory.js"></script>
+  <script src="inventory/inventory.js?v=visible-items-20260919"></script>
   <script src="../combat/encounter/combat.js"></script>
   <script src="../combat/encounter/battle-ui.js?v=matched-sword-speed"></script>
   <script src="combat/combat.js?v=skill-test-20260919"></script>

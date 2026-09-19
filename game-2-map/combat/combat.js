@@ -36,14 +36,29 @@ function syncBattle() {
     onDamage(amount) { player.takeDamage(amount); renderPlayerStats(); },
     onComplete(outcome) { navigateToLocation(config[outcome === 'victory' ? 'victory' : 'defeat']); }
     });
+    const compactStyle = document.createElement('style');
+    compactStyle.textContent = `
+      main { display:grid; grid-template-columns:1fr auto; gap:4px 10px; text-align:center; }
+      p, h2 { margin:0; } p { line-height:1.35; } h2 { font-size:20px; text-align:left; }
+      #stats, .scores, .arena, #rules, #result, #action { grid-column:1 / -1; }
+      #stats, .scores p:first-child { display:none; } .scores { gap:16px; }
+      .scores p { font-size:14px; } .scores strong { display:inline; font-size:20px; }
+      #clock { font-size:16px; align-self:center; }
+      #attack-area, #defence-area { width:min(52%, 16dvh); max-width:180px; margin:3px auto; }
+      #attack-sword { width:55px; } #defence-sword { height:80px; }
+      #rules { font-size:14px; line-height:1.3; }
+      #result { min-height:24px; font-size:17px; line-height:1.3; }
+      #action { min-height:44px; margin:0; font-size:16px; }
+    `;
+    document.getElementById('battle').shadowRoot.appendChild(compactStyle);
   }
   const host = document.getElementById('battle');
   const view = host.shadowRoot || host.attachShadow({ mode: 'open' });
   view.innerHTML = `<link rel="stylesheet" href="../dice/dice.css">
-    <style>:host { display:block; flex-shrink:0; } h2 { font-size:24px; }
-    .dice-pair { margin:12px 0; padding:22px 0; gap:28px; }
-    .die { width:88px; padding:14px; gap:7px; } [hidden] { display:none!important; }
-    button { letter-spacing:.08em; } p { line-height:1.5; }</style>
+    <style>:host { display:block; flex-shrink:0; } h2 { font-size:24px; margin:0 0 8px; }
+    .dice-pair { margin:6px 0; padding:8px 0; gap:28px; }
+    .die { width:64px; padding:10px; gap:5px; } [hidden] { display:none!important; }
+    button { letter-spacing:.08em; } p { line-height:1.35; margin:8px 0; } button { min-height:44px; }</style>
     <h2>TEST YOUR SKILL</h2><p id="skill-value"></p>
     <div id="skill-dice" class="dice-pair" role="img" aria-label="Two dice ready"></div>
     <p id="skill-result" role="status" aria-live="polite"></p>

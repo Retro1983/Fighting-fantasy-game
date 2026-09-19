@@ -16,7 +16,7 @@ function element() {
     replaceChildren(...children){this.children=children;},
     addEventListener(type, fn){events.set(type,fn);}, removeEventListener(type){events.delete(type);},
     click(){events.get('click')?.();this.onclick?.();},
-    attachShadow(){const children=new Map();this.shadowRoot={ innerHTML:'',
+    attachShadow(){const children=new Map();this.shadowRoot={ innerHTML:'', appendChild(){},
       getElementById(id){if(!children.has(id)) children.set(id,element());return children.get(id);},
       replaceChildren(){children.clear();} };return this.shadowRoot;}
   };
@@ -32,7 +32,7 @@ const ctx = vm.createContext({document, Combat, PlayerStats, URL, makeCharacter,
   performance:{now:()=>now}, requestAnimationFrame(fn){frames.set(++next,fn);return next;},cancelAnimationFrame(id){frames.delete(id);},
   setInterval(){throw Error('Old room timer must not start');},clearInterval(){},
   window:{addEventListener(k,fn){listeners.set(k,fn);},removeEventListener(k){listeners.delete(k);}},
-  pendingLuck:null,cancelLuckCheck(){},setupLuckCheck(){},setupCharacterCreation(){},characterSetup:{reset(){}} });
+  pendingLuck:null,stopLuckCheck(){},cancelLuckCheck(){},setupLuckCheck(){},setupCharacterCreation(){},characterSetup:{reset(){}} });
 for(const file of ['combat/encounter/battle-ui.js','game-2-map/map-data.js','game-2-map/navigation/navigation.js',
   'game-2-map/inventory/inventory.js','game-2-map/combat/combat.js','game-2-map/game.js'])
   vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx);
@@ -100,3 +100,36 @@ console.log('PASS: room entry, shared attack/defence and timeouts, STAMINA persi
 
 diceTotal=12;start();turn(750);assert.equal(state().opponent,10,'FAIL attack centre uses 400ms');turn(750);assert.equal(state().player,20,'FAIL defence centre also uses 400ms');run('resetAdventure();');
 console.log('PASS: Skill equality, failure, explicit begin, rerender/reentry guards, unchanged SKILL, and matching per-battle attack and defence timing.');
+
+// UI paging must not navigate, alter stats, or lose its place on inventory renders.
+run('state.player=makeCharacter(); navigateToLocation("RA1");');
+assert.equal(nodes.get('storyPager').hidden,true);
+assert.equal(nodes.get('storyContent').hidden,false);
+run('LOCATIONS.RA1.pages=["First page", "Second page", "Last page"]; render();');
+assert.equal(nodes.get('storyText').textContent,'First page');
+assert.equal(nodes.get('choiceButtons').children.length,0);
+run('changeStoryPage(1); render();');
+assert.equal(nodes.get('pageIndicator').textContent,'2 / 3');
+assert.equal(nodes.get('choiceButtons').children.length,0);
+run('changeStoryPage(1);');
+assert.ok(nodes.get('choiceButtons').children.length > 0);
+run('changeStoryPage(-1);');
+assert.equal(nodes.get('choiceButtons').children.length,0);
+run('navigateToLocation("RB1"); navigateToLocation("RA1");');
+assert.equal(nodes.get('storyText').textContent,'First page');
+run('delete LOCATIONS.RA1.pages; navigateToLocation("MONSTER");');
+assert.equal(nodes.get('storyContent').hidden,true);
+assert.equal(nodes.get('battle').hidden,false);
+run('navigateToLocation("RA1");');
+assert.equal(nodes.get('storyContent').hidden,false);
+console.log('PASS: legacy text, optional pages, final-page choices, backward paging, navigation reset and encounter/story switching.');
+
+run('state.player=makeCharacter(); state.inventory=[]; navigateToLocation("CH1");');
+nodes.get('inventoryPanel').hidden = true;
+run('beginChestSelection(); takeChestItem("torch");');
+assert.equal(nodes.get('inventoryPanel').hidden,false,'First pickup reveals both slots');
+assert.equal(nodes.get('inventoryItem1').textContent,'Glowing Torch');
+run('takeChestItem("sword"); navigateToLocation("M3"); toggleInventoryPanel();');
+assert.equal(nodes.get('inventoryPanel').hidden,false,'Carried items stay visible after navigation and Inventory clicks');
+assert.equal(nodes.get('inventoryItem2').textContent,'Sword');
+console.log('PASS: item slots visible immediately after pickup and while carrying items.');

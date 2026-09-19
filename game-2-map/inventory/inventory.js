@@ -58,6 +58,11 @@ function visibleChoices(location) {
 }
 
 function renderInventory() {
+  // Carried items stay visible; visibility must not depend on a pickup transition.
+  if (state.inventory.length > 0) {
+    document.getElementById("inventoryPanel").hidden = false;
+    document.getElementById("inventoryButton").setAttribute("aria-expanded", "true");
+  }
   document.getElementById("inventoryCount").textContent = `${state.inventory.length}/2`;
   [0, 1].forEach(index => {
     const itemId = state.inventory[index];
@@ -74,7 +79,7 @@ function renderInventory() {
 
 function toggleInventoryPanel() {
   const panel = document.getElementById("inventoryPanel");
-  panel.hidden = !panel.hidden;
+  panel.hidden = state.inventory.length > 0 ? false : !panel.hidden;
   document.getElementById("inventoryButton").setAttribute("aria-expanded", String(!panel.hidden));
 }
 
