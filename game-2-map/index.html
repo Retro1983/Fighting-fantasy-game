@@ -1,13 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="game-2-starting">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html { background: #080706; }
+    html.game-2-starting body { visibility: hidden; }
+  </style>
   <title>Fighting Fantasy - Game 2</title>
   <link rel="stylesheet" href="style.css?v=activity-panel-20260919">
 </head>
 <body>
-  <section id="characterSetup" aria-label="Create your character"></section>
+  <section id="characterSetup" aria-label="Create your character" hidden></section>
   <main id="adventure" class="game-shell" hidden>
     <section class="scene-panel">
       <img id="scene" alt="Current dungeon location">

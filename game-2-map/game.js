@@ -110,3 +110,4 @@ setupCharacterCreation();
 setupNavigationControls();
 setupInventoryControls();
 render();
+document.documentElement?.classList.remove("game-2-starting");
