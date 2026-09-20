@@ -85,6 +85,24 @@ button { margin: 8px; }
 #stat-dice { padding: 28px; margin: 20px auto; }
 #creation { margin-top: 28px; }
 
+/* One presentation layer, outside layout and transparent to all pointer input. */
+.battle-view { position: relative; }
+.combat-feedback { position: absolute; inset: 0; z-index: 20; overflow: hidden; pointer-events: none;
+  display: grid; place-items: center; isolation: isolate; border-radius: 4px;
+  animation: combat-feedback-fade 700ms ease-out both; }
+.combat-feedback * { pointer-events: none; }
+.feedback-blood { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .8; z-index: -1; }
+.feedback-text { max-width: 95%; padding: 8px; box-sizing: border-box; text-align: center;
+  white-space: pre-line; color: #fff0cf; font: bold clamp(24px, 4vw, 56px)/1.15 Georgia, serif;
+  text-shadow: 0 3px 5px #000, 0 0 12px #000, 1px 1px 1px #000; }
+.feedback-critical .feedback-text { color: #ffe0ca; }
+.feedback-partial .feedback-blood, .feedback-block .feedback-blood { opacity: .65; }
+.feedback-partial .feedback-text, .feedback-block .feedback-text { font-size: clamp(22px, 3vw, 40px); }
+.feedback-hit { box-shadow: inset 0 0 35px 8px #a51b2280; }
+.feedback-hit .feedback-text { color: #ffd0c8; }
+@keyframes combat-feedback-fade { 0%, 65% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .combat-feedback { animation: none; } }
+
 </style>
 </head>
 <body>

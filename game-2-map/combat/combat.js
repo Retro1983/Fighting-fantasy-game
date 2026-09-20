@@ -31,6 +31,7 @@ function syncBattle() {
     activeBattle = BattleUI.mount(document.getElementById('battle'), {
     attackTravelTime: test.passed ? 1800 : 800,
     defenceTravelTime: test.passed ? 1800 : 800,
+    feedbackTarget: document.getElementById('scene'),
     player: player.getState().current,
     enemy: { ...Combat.beast, ...config.enemy },
     onDamage(amount) { player.takeDamage(amount); renderPlayerStats(); },
